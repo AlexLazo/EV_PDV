@@ -42,7 +42,18 @@ st.markdown("""
 # Cargar datos
 @st.cache_data
 def load_data():
-    file_path = r'c:\xampp\htdocs\EV_PDV\PDV_Evaluados.xlsx'
+    from pathlib import Path
+
+    base_path = Path(__file__).resolve().parent
+    file_path = base_path / 'PDV_Evaluados.xlsx'
+
+    if not file_path.exists():
+        st.error(
+            f"No se encontró el archivo de datos: {file_path} <br>" \
+            "Asegúrate de que `PDV_Evaluados.xlsx` esté en la carpeta del proyecto."
+        )
+        st.stop()
+
     df = pd.read_excel(file_path)
     
     # Limpieza y normalización de datos
